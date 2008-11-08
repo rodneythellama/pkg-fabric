@@ -1,5 +1,5 @@
 fabric (0.0.9-1) unstable; urgency=low
 
-  * Initial release. (Closes: #457243)
+  * Initial release. (Closes: #504799)
 
- -- Chris Lamb <lamby@debian.org>  Fri, 07 Nov 2008 09:56:01 +0000
+ -- Chris Lamb <lamby@debian.org>  Sat, 08 Nov 2008 03:29:25 +0000
