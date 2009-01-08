@@ -1,3 +1,10 @@
+fabric (0.0.9-2) unstable; urgency=low
+
+  * Add missing Build-Depends-Indep on python-setuptools. Found by checking
+    source-only upload to Ubuntu.
+
+ -- Chris Lamb <lamby@debian.org>  Thu, 08 Jan 2009 23:36:39 +0000
+
 fabric (0.0.9-1) unstable; urgency=low
 
   * Initial release. (Closes: #504799)
