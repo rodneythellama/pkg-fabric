@@ -1,6 +1,7 @@
 fabric (0.1.0-1) UNRELEASED; urgency=low
 
   * New upstream release.
+  * Correct title of manual page.
   * Correct typo in debian/copyright.
   * Updating location of Git URLs.
 
