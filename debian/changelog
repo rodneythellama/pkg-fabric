@@ -1,3 +1,9 @@
+fabric (0.1.0-2) UNRELEASED; urgency=low
+
+  * Set section to 'net' from 'python'.
+
+ -- Chris Lamb <lamby@debian.org>  Sun, 22 Feb 2009 03:56:44 +0000
+
 fabric (0.1.0-1) unstable; urgency=low
 
   * New upstream release.

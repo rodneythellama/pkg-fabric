@@ -1,5 +1,5 @@
 Source: fabric
-Section: python
+Section: net
 Priority: optional
 Maintainer: Chris Lamb <lamby@debian.org>
 Build-Depends: debhelper (>= 7)
