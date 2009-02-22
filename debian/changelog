@@ -1,11 +1,11 @@
-fabric (0.1.0-1) UNRELEASED; urgency=low
+fabric (0.1.0-1) unstable; urgency=low
 
   * New upstream release.
   * Correct title of manual page.
   * Correct typo in debian/copyright.
   * Updating location of Git URLs.
 
- -- Chris Lamb <lamby@debian.org>  Sun, 22 Feb 2009 02:44:31 +0000
+ -- Chris Lamb <lamby@debian.org>  Sun, 22 Feb 2009 02:49:44 +0000
 
 fabric (0.0.9-2) unstable; urgency=low
 
