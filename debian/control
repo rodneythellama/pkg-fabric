@@ -5,8 +5,8 @@ Maintainer: Chris Lamb <lamby@debian.org>
 Build-Depends: debhelper (>= 7)
 Build-Depends-Indep: python-support, python-setuptools
 Standards-Version: 3.8.0
-Vcs-Git: git://git.chris-lamb.co.uk/pkg-fabric.git
-Vcs-Browser: http://git.chris-lamb.co.uk/?p=pkg-fabric.git
+Vcs-Git: git://git.chris-lamb.co.uk/debian/pkg-fabric.git
+Vcs-Browser: http://git.chris-lamb.co.uk/?p=debian/pkg-fabric.git
 Homepage: http://www.nongnu.org/fab/
 
 Package: fabric
