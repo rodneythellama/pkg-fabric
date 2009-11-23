@@ -1,10 +1,11 @@
 fabric (0.9.0-1) UNRELEASED; urgency=low
 
   * New upstream release (Closes: #555796)
-  * Add missing binary dependency on python-pkg-resources (Closes: #557144)
   * Update debian/watch.
-  * Update Homepage field.
-  * Bump Standards-Version.
+  * debian/control:
+    - Add missing binary dependency on python-pkg-resources (Closes: #557144)
+    - Update Homepage field.
+    - Bump Standards-Version.
 
  -- Chris Lamb <lamby@debian.org>  Mon, 23 Nov 2009 01:13:37 +0000
 
