@@ -7,7 +7,7 @@ Build-Depends-Indep: python-support, python-setuptools
 Standards-Version: 3.8.1
 Vcs-Git: git://git.chris-lamb.co.uk/debian/pkg-fabric.git
 Vcs-Browser: http://git.chris-lamb.co.uk/?p=debian/pkg-fabric.git
-Homepage: http://www.nongnu.org/fab/
+Homepage: http://fabfile.org/
 
 Package: fabric
 Architecture: all
