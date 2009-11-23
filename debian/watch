@@ -1,2 +1,2 @@
 version=2
-http://download.savannah.gnu.org/releases/fab/fab-(.+).tar.gz
+http://code.fabfile.org/projects/fabric/files/ [fF]abric-(.+).tar.gz
