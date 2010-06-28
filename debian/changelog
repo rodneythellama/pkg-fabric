@@ -1,11 +1,11 @@
-fabric (0.9.0-3) UNRELEASED; urgency=low
+fabric (0.9.0-3) unstable; urgency=low
 
   * Don't try and install changes/ directory; something in sid now means this
     is causing a FTBFS. (Closes: #587138)
   * Switch to dpkg v3 source format.
   * Bump Standards-Version to 3.8.4.
 
- -- Chris Lamb <lamby@debian.org>  Mon, 28 Jun 2010 10:41:23 +0100
+ -- Chris Lamb <lamby@debian.org>  Mon, 28 Jun 2010 10:44:43 +0100
 
 fabric (0.9.0-2) unstable; urgency=low
 
