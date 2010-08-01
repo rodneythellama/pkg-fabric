@@ -1,6 +1,7 @@
 fabric (0.9.1-1) UNRELEASED; urgency=low
 
   * New upstream release.
+  * Bump Standards-Version to 3.9.1.
 
  -- Chris Lamb <lamby@debian.org>  Sun, 01 Aug 2010 16:13:10 -0400
 
