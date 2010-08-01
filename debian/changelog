@@ -1,3 +1,9 @@
+fabric (0.9.1-1) UNRELEASED; urgency=low
+
+  * New upstream release.
+
+ -- Chris Lamb <lamby@debian.org>  Sun, 01 Aug 2010 16:13:10 -0400
+
 fabric (0.9.0-3) unstable; urgency=low
 
   * Don't try and install changes/ directory; something in sid now means this
