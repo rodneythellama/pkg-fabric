@@ -1,8 +1,9 @@
-fabric (0.9.2-2) UNRELEASED; urgency=low
+fabric (0.9.3-1) UNRELEASED; urgency=low
 
+  * New upstream release (Closes: #612361)
   * Update Vcs-{Git,Browser}.
 
- -- Chris Lamb <lamby@debian.org>  Sat, 26 Feb 2011 17:42:20 +0000
+ -- Chris Lamb <lamby@debian.org>  Sun, 27 Feb 2011 21:26:58 +0000
 
 fabric (0.9.2-1) unstable; urgency=low
 
