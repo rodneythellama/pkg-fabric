@@ -1,9 +1,9 @@
-fabric (1.0.2-1) UNRELEASED; urgency=low
+fabric (1.0.2-1) unstable; urgency=low
 
   * New upstream release.
   * Bump Standards-Version to 3.9.2.
 
- -- Chris Lamb <lamby@debian.org>  Tue, 28 Jun 2011 19:53:17 +0100
+ -- Chris Lamb <lamby@debian.org>  Tue, 28 Jun 2011 19:54:22 +0100
 
 fabric (1.0.1-1) unstable; urgency=low
 
