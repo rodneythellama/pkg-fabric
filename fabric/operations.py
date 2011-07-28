@@ -19,11 +19,11 @@ from contextlib import closing
 from fabric.context_managers import settings, char_buffered
 from fabric.io import output_loop, input_loop
 from fabric.network import needs_host
+from fabric.sftp import SFTP
 from fabric.state import (env, connections, output, win32, default_channel,
     io_sleep)
-from fabric.utils import abort, indent, warn, puts
 from fabric.thread_handling import ThreadHandler
-from fabric.sftp import SFTP
+from fabric.utils import abort, indent, warn, puts, handle_prompt_abort
 
 # For terminal size logic below
 if not win32:
@@ -136,13 +136,16 @@ def require(*keys, **kwargs):
     so format it appropriately.
 
     The optional keyword argument ``provided_by`` may be a list of functions or
-    function names which the user should be able to execute in order to set the
-    key or keys; it will be included in the error output if requirements are
-    not met.
+    function names or a single function or function name which the user should
+    be able to execute in order to set the key or keys; it will be included in
+    the error output if requirements are not met.
 
     Note: it is assumed that the keyword arguments apply to all given keys as a
     group. If you feel the need to specify more than one ``used_for``, for
     example, you should break your logic into multiple calls to ``require()``.
+
+    .. versionchanged:: 1.1
+        Allow iterable ``provided_by`` values instead of just single values.
     """
     # If all keys exist, we're good, so keep going.
     missing_keys = filter(lambda x: x not in env, keys)
@@ -170,7 +173,9 @@ def require(*keys, **kwargs):
     # And print provided_by if given
     if 'provided_by' in kwargs:
         funcs = kwargs['provided_by']
-        # Pluralize this too
+        # non-iterable is given, treat it as a list of this single item
+        if not hasattr(funcs, '__iter__'):
+            funcs = [funcs]
         if len(funcs) > 1:
             command = "one of the following commands"
         else:
@@ -215,6 +220,13 @@ def prompt(text, key=None, default='', validate=None):
     Either way, `prompt` will re-prompt until validation passes (or the user
     hits ``Ctrl-C``).
 
+    .. note::
+        `~fabric.operations.prompt` honors :ref:`env.abort_on_prompts
+        <abort-on-prompts>` and will call `~fabric.utils.abort` instead of
+        prompting if that flag is set to ``True``. If you want to block on user
+        input regardless, try wrapping with
+        `~fabric.context_managers.settings`.
+
     Examples::
 
         # Simplest form:
@@ -230,7 +242,12 @@ def prompt(text, key=None, default='', validate=None):
         release = prompt('Please supply a release name',
                 validate=r'^\w+-\d+(\.\d+)?$')
 
+        # Prompt regardless of the global abort-on-prompts setting:
+        with settings(abort_on_prompts=False):
+            prompt('I seriously need an answer on this! ')
+
     """
+    handle_prompt_abort()
     # Store previous env value for later display, if necessary
     if key:
         previous_value = env.get(key)

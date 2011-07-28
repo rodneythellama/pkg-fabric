@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
 Name: Fabric
-Version: 1.0.2
+Version: 1.1.2
 Summary: Fabric is a simple, Pythonic tool for remote execution and deployment.
 Home-page: http://fabfile.org
 Author: Jeff Forcier
@@ -8,7 +8,7 @@ Author-email: jeff@bitprophet.org
 License: UNKNOWN
 Description: 
         To find out what's new in this version of Fabric, please see `the changelog
-        <http://docs.fabfile.org/en/1.0.2/changes/1.0.2.html>`_.
+        <http://docs.fabfile.org/en/1.1.2/changes/1.1.2.html>`_.
         
         You can also install the `in-development version
         <https://github.com/bitprophet/fabric/tarball/master#egg=fabric-dev>`_ using
