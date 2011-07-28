@@ -1,8 +1,8 @@
-fabric (1.1.2-1) UNRELEASED; urgency=low
+fabric (1.1.2-1) unstable; urgency=low
 
   * New upstream release.
 
- -- Chris Lamb <lamby@debian.org>  Thu, 28 Jul 2011 19:22:22 +0200
+ -- Chris Lamb <lamby@debian.org>  Thu, 28 Jul 2011 19:32:36 +0200
 
 fabric (1.0.2-1) unstable; urgency=low
 
