@@ -1,6 +1,7 @@
 fabric (1.3.2-1) UNRELEASED; urgency=low
 
   * New upstream release (Closes: #648483)
+  * Update debian/watch.
 
  -- Chris Lamb <lamby@debian.org>  Wed, 16 Nov 2011 17:27:11 +0000
 

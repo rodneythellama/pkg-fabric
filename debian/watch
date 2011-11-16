@@ -1,2 +1,2 @@
-version=2
-http://code.fabfile.org/projects/fabric/files/ [fF]abric-(.+).tar.gz
+version=3
+http://githubredir.debian.net/github/fabric/fabric /(\d.*).tar.gz
