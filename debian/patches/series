@@ -1,1 +1,2 @@
 01-paramiko.diff -p1
+02-no-upstream-tags-when-building.diff -p1

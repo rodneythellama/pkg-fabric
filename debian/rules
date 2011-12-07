@@ -3,9 +3,21 @@
 %:
 	dh $@
 
+override_dh_auto_build:
+	dh_auto_build
+	$(MAKE) -C docs html
+
 override_dh_auto_clean:
 	rm -rf paramiko/
 	dh_auto_clean
 
+override_dh_auto_install:
+	ln -sf /usr/share/javascript/jquery/jquery.js \
+		docs/_build/html/_static/jquery.js
+	dh_auto_clean
+
 override_dh_installchangelogs:
 	dh_installchangelogs --exclude=changes
+
+override_dh_compress:
+	dh_compress -X.js -X.txt
