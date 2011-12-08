@@ -1,8 +1,8 @@
-fabric (1.3.2-3) UNRELEASED; urgency=low
+fabric (1.3.2-3) unstable; urgency=low
 
   * Ship documentation. (Closes: #649610)
 
- -- Chris Lamb <lamby@debian.org>  Thu, 08 Dec 2011 14:49:26 +0000
+ -- Chris Lamb <lamby@debian.org>  Thu, 08 Dec 2011 14:51:01 +0000
 
 fabric (1.3.2-2) unstable; urgency=low
 
