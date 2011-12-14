@@ -1,9 +1,10 @@
-fabric (1.3.2-4) UNRELEASED; urgency=low
+fabric (1.3.2-4) unstable; urgency=low
 
   * Call "install" in override_dh_auto_install, not "clean".
     (Closes: #651599)
+  * Add missing python-sphinx dependency. (Closes: #651597, #651602)
 
- -- Chris Lamb <lamby@debian.org>  Wed, 14 Dec 2011 16:38:27 +0000
+ -- Chris Lamb <lamby@debian.org>  Wed, 14 Dec 2011 16:41:43 +0000
 
 fabric (1.3.2-3) unstable; urgency=low
 
