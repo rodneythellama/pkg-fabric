@@ -3,7 +3,7 @@ Section: net
 Priority: optional
 Maintainer: Chris Lamb <lamby@debian.org>
 Build-Depends: debhelper (>= 7.0.50~), python-all (>= 2.6.6-3~)
-Build-Depends-Indep: python-setuptools, python-sphinx
+Build-Depends-Indep: python-setuptools, python-sphinx, python-paramiko
 Standards-Version: 3.9.2
 Vcs-Git: git://github.com/lamby/pkg-fabric.git
 Vcs-Browser: https://github.com/lamby/pkg-fabric
