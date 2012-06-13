@@ -1,15 +1,16 @@
 diff --git a/fabric/network.py b/fabric/network.py
 index eb8cfb3..630c90b 100644
---- a/fabric/network.py
-+++ b/fabric/network.py
-@@ -18,7 +18,7 @@ from fabric.utils import abort, handle_prompt_abort
+--- a/fabric/network.py	2012-06-13 16:26:39.000000000 +0100
++++ b/fabric/network.py	2012-06-13 16:26:45.000000000 +0100
+@@ -21,7 +21,7 @@
  try:
      import warnings
      warnings.simplefilter('ignore', DeprecationWarning)
 -    import ssh
 +    import paramiko as ssh
  except ImportError, e:
-     print >> sys.stderr, """There was a problem importing our SSH library. Specifically:
+     import traceback
+     traceback.print_exc()
  
 diff --git a/setup.py b/setup.py
 index af10e2f..5630fd4 100644
