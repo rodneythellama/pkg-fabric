@@ -1,22 +1,19 @@
-diff --git a/fabric/network.py b/fabric/network.py
-index eb8cfb3..630c90b 100644
---- a/fabric/network.py	2012-06-13 16:26:39.000000000 +0100
-+++ b/fabric/network.py	2012-06-13 16:26:45.000000000 +0100
-@@ -21,7 +21,7 @@
+--- a/fabric/network.py
++++ b/fabric/network.py
+@@ -21,7 +21,9 @@
  try:
      import warnings
      warnings.simplefilter('ignore', DeprecationWarning)
 -    import ssh
 +    import paramiko as ssh
++    # python-ssh compatibility
++    ssh.io_sleep = 0.01
  except ImportError, e:
      import traceback
      traceback.print_exc()
- 
-diff --git a/setup.py b/setup.py
-index af10e2f..5630fd4 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -38,7 +38,6 @@ setup(
+@@ -38,7 +38,6 @@
      packages=find_packages(),
      test_suite='nose.collector',
      tests_require=['nose', 'fudge<1.0'],

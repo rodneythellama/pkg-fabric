@@ -1,3 +1,10 @@
+fabric (1.4.2-1.1) UNRELEASED; urgency=low
+
+  * Fix paramiko incompatiblity with python-ssh. Thanks to Emmanuel Bouthenot
+    (Closes: #677479)
+
+ -- Chris Lamb <lamby@debian.org>  Wed, 13 Jun 2012 16:31:01 +0100
+
 fabric (1.4.2-1) unstable; urgency=low
 
   * New upstream release.
