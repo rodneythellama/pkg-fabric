@@ -25,6 +25,34 @@ would have also been included in the 1.2 line.
 Changelog
 =========
 
+* :release:`1.4.3 <2012-07-06>`
+* :release:`1.3.8 <2012-07-06>`
+* :bug:`671` :ref:`reject-unknown-hosts` sometimes resulted in a password
+  prompt instead of an abort. This has been fixed. Thanks to Roy Smith for the
+  report.
+* :bug:`659` Update docs to reflect that `~fabric.operations.local` currently
+  honors :ref:`env.path <env-path>`. Thanks to `@floledermann
+  <https://github.com/floledermann>`_ for the catch.
+* :bug:`652` Show available commands when aborting on invalid command names.
+* :support:`651` Added note about nesting ``with`` statements on Python 2.6+.
+  Thanks to Jens Rantil for the patch.
+* :bug:`649` Don't swallow non-`abort`-driven exceptions in parallel mode.
+  Fabric correctly printed such exceptions, and returned them from
+  `~fabric.tasks.execute`, but did not actually cause the child or parent
+  processes to halt with a nonzero status. This has been fixed.
+  `~fabric.tasks.execute` now also honors :ref:`env.warn_only <warn-only>` so
+  users may still opt to call it by hand and inspect the returned exceptions,
+  instead of encountering a hard stop. Thanks to Matt Robenolt for the catch.
+* :support:`645` Update Sphinx docs to work well when run out of a source
+  tarball as opposed to a Git checkout. Thanks again to `@Arfrever` for the
+  catch.
+* :support:`640` (also :issue:`644`) Update packaging manifest so sdist
+  tarballs include all necessary test & doc files. Thanks to Mike Gilbert and
+  `@Arfrever` for catch & patch.
+* :support:`634` Clarified that `~fabric.context_managers.lcd` does no special
+  handling re: the user's current working directory, and thus relative paths
+  given to it will be relative to ``os.getcwd()``. Thanks to `@techtonik
+  <https://github.com/techtonik>`_ for the catch.
 * :release:`1.4.2 <2012-05-07>`
 * :release:`1.3.7 <2012-05-07>`
 * :bug:`562` Agent forwarding would error out or freeze when multiple uses of
