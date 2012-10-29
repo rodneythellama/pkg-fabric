@@ -2,6 +2,7 @@ fabric (1.4.3-1) UNRELEASED; urgency=low
 
   * New upstream release (Closes: #680209)
   * Drop 02-no-upstream-tags-when-building.diff.
+  * Bump Standards-Version to 3.9.3.
 
  -- Chris Lamb <lamby@debian.org>  Mon, 29 Oct 2012 23:55:39 +0000
 
