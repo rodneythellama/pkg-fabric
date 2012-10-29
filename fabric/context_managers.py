@@ -5,6 +5,31 @@ Context managers for use with the ``with`` statement.
     with ``from __future__ import with_statement`` in order to make use of
     the ``with`` statement (which is a regular, non ``__future__`` feature of
     Python 2.6+.)
+
+.. note:: If you are using multiple directly nested ``with`` statements, it can
+    be convenient to use multiple context expressions in one single with
+    statement. Instead of writing::
+
+        with cd('/path/to/app'):
+            with prefix('workon myvenv'):
+                run('./manage.py syncdb')
+                run('./manage.py loaddata myfixture')
+
+    you can write::
+
+        with cd('/path/to/app'), prefix('workon myvenv'):
+            run('./manage.py syncdb')
+            run('./manage.py loaddata myfixture')
+
+    Note that you need Python 2.6+ for this to work. On Python 2.5, you can do the following::
+
+        from contextlib import nested
+
+        with nested(cd('/path/to/app'), prefix('workon myvenv')):
+            ...
+
+    Finally, note that `~fabric.context_managers.settings` implements
+    ``nested`` itself -- see its API doc for details.
 """
 
 from contextlib import contextmanager, nested
@@ -270,6 +295,13 @@ def lcd(path):
     that it changes a different env var (`lcwd`, instead of `cwd`) and thus
     only affects the invocation of `~fabric.operations.local` and the local
     arguments to `~fabric.operations.get`/`~fabric.operations.put`.
+
+    Relative path arguments are relative to the local user's current working
+    directory, which will vary depending on where Fabric (or Fabric-using code)
+    was invoked. You can check what this is with `os.getcwd
+    <http://docs.python.org/release/2.6/library/os.html#os.getcwd>`_. It may be
+    useful to pin things relative to the location of the fabfile in use, which
+    may be found in :ref:`env.real_fabfile <real-fabfile>`
 
     .. versionadded:: 1.0
     """

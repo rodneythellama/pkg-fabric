@@ -416,10 +416,10 @@ per-host-string password cache. Keys are full :ref:`host strings
 
 **Default:** ``''``
 
-Used to set the remote ``$PATH`` when executing commands in
-`~fabric.operations.run`/`~fabric.operations.sudo`. It is recommended to use
-the `~fabric.context_managers.path` context manager for managing this value
-instead of setting it directly.
+Used to set the ``$PATH`` shell environment variable when executing commands in
+`~fabric.operations.run`/`~fabric.operations.sudo`/`~fabric.operations.local`.
+It is recommended to use the `~fabric.context_managers.path` context manager
+for managing this value instead of setting it directly.
 
 .. versionadded:: 1.0
 
@@ -445,6 +445,8 @@ Sets the number of concurrent processes to use when executing tasks in parallel.
 
 Set to the port part of ``env.host_string`` by ``fab`` when iterating over a
 host list. May also be used to specify a default port.
+
+.. _real-fabfile:
 
 ``real_fabfile``
 ----------------
