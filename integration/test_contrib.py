@@ -1,3 +1,4 @@
+import os
 import types
 
 from fabric.api import run, local
@@ -21,6 +22,14 @@ def escape(path):
 
 
 class TestTildeExpansion(Integration):
+    def setup(self):
+        self.created = []
+
+    def teardown(self):
+        super(TestTildeExpansion, self).teardown()
+        for created in self.created:
+            os.unlink(created)
+
     def test_append(self):
         for target in ('~/append_test', '~/append_test with spaces'):
             files.append(target, ['line'])
@@ -44,5 +53,17 @@ class TestTildeExpansion(Integration):
         )):
             src = "source%s" % i
             local("touch %s" % src)
+            self.created.append(src)
             files.upload_template(src, target)
             expect(target)
+
+
+class TestIsLink(Integration):
+    # TODO: add more of these. meh.
+    def test_is_link_is_true_on_symlink(self):
+        run("ln -s /tmp/foo /tmp/bar")
+        assert files.is_link('/tmp/bar')
+
+    def test_is_link_is_false_on_non_link(self):
+        run("touch /tmp/biz")
+        assert not files.is_link('/tmp/biz')
