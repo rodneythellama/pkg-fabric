@@ -4,12 +4,22 @@ import hashlib
 import os
 import posixpath
 import stat
-import tempfile
+import re
 from fnmatch import filter as fnfilter
 
 from fabric.state import output, connections, env
 from fabric.utils import warn
 from fabric.context_managers import settings
+
+
+def _format_local(local_path, local_is_path):
+    """Format a path for log output"""
+    if local_is_path:
+        return local_path
+    else:
+        # This allows users to set a name attr on their StringIO objects
+        # just like an open file object would have
+        return getattr(local_path, 'name', '<file obj>')
 
 
 class SFTP(object):
@@ -58,7 +68,7 @@ class SFTP(object):
         return ret
 
     def walk(self, top, topdown=True, onerror=None, followlinks=False):
-        from os.path import join, isdir, islink
+        from os.path import join
 
         # We may not have read permission for top, in which case we can't get a
         # list of the files the directory contains. os.path.walk always
@@ -114,8 +124,10 @@ class SFTP(object):
             'path': rremote
         }
         if local_is_path:
-            # Interpolate, then abspath (to make sure any /// are compressed)
-            local_path = os.path.abspath(local_path % path_vars)
+            # Naive fix to issue #711
+            escaped_path = re.sub(r'(%[^()]*\w)', r'%\1', local_path)
+            local_path = os.path.abspath(escaped_path % path_vars )
+
             # Ensure we give ssh.SFTPCLient a file by prepending and/or
             # creating local directories as appropriate.
             dirpath, filepath = os.path.split(local_path)
@@ -126,30 +138,23 @@ class SFTP(object):
         if output.running:
             print("[%s] download: %s <- %s" % (
                 env.host_string,
-                local_path if local_is_path else "<file obj>",
+                _format_local(local_path, local_is_path),
                 remote_path
             ))
         # Warn about overwrites, but keep going
         if local_is_path and os.path.exists(local_path):
             msg = "Local file %s already exists and is being overwritten."
             warn(msg % local_path)
-        # Have to bounce off FS if doing file-like objects
-        fd, real_local_path = None, local_path
+        # File-like objects: reset to file seek 0 (to ensure full overwrite)
+        # and then use Paramiko's getfo() directly
+        getter = self.ftp.get
         if not local_is_path:
-            fd, real_local_path = tempfile.mkstemp()
-        self.ftp.get(remote_path, real_local_path)
-        # Return file contents (if it needs stuffing into a file-like obj)
-        # or the final local file path (otherwise)
-        result = None
-        if not local_is_path:
-            file_obj = os.fdopen(fd)
-            result = file_obj.read()
-            # Clean up temporary file
-            file_obj.close()
-            os.remove(real_local_path)
-        else:
-            result = real_local_path
-        return result
+            local_path.seek(0)
+            getter = self.ftp.getfo
+        getter(remote_path, local_path)
+        # Return local_path object for posterity. (If mutated, caller will want
+        # to know.)
+        return local_path
 
     def get_dir(self, remote_path, local_path):
         # Decide what needs to be stripped from remote paths so they're all
@@ -201,7 +206,7 @@ class SFTP(object):
         if output.running:
             print("[%s] put: %s -> %s" % (
                 env.host_string,
-                local_path if local_is_path else '<file obj>',
+                _format_local(local_path, local_is_path),
                 posixpath.join(pre, remote_path)
             ))
         # When using sudo, "bounce" the file through a guaranteed-unique file
@@ -213,25 +218,26 @@ class SFTP(object):
             hasher.update(env.host_string)
             hasher.update(target_path)
             remote_path = hasher.hexdigest()
-        # Have to bounce off FS if doing file-like objects
-        fd, real_local_path = None, local_path
+        # Read, ensuring we handle file-like objects correct re: seek pointer
+        putter = self.ftp.put
         if not local_is_path:
-            fd, real_local_path = tempfile.mkstemp()
             old_pointer = local_path.tell()
             local_path.seek(0)
-            file_obj = os.fdopen(fd, 'wb')
-            file_obj.write(local_path.read())
-            file_obj.close()
-            local_path.seek(old_pointer)
-        rattrs = self.ftp.put(real_local_path, remote_path)
-        # Clean up
+            putter = self.ftp.putfo
+        rattrs = putter(local_path, remote_path)
         if not local_is_path:
-            os.remove(real_local_path)
+            local_path.seek(old_pointer)
         # Handle modes if necessary
         if (local_is_path and mirror_local_mode) or (mode is not None):
             lmode = os.stat(local_path).st_mode if mirror_local_mode else mode
+            # Cast to octal integer in case of string
+            if isinstance(lmode, basestring):
+                lmode = int(lmode, 8)
             lmode = lmode & 07777
-            rmode = rattrs.st_mode & 07777
+            rmode = rattrs.st_mode
+            # Only bitshift if we actually got an rmode
+            if rmode is not None:
+                rmode = (rmode & 07777)
             if lmode != rmode:
                 if use_sudo:
                     with hide('everything'):
@@ -258,6 +264,8 @@ class SFTP(object):
 
         for context, dirs, files in os.walk(local_path):
             rcontext = context.replace(strip, '', 1)
+            # normalize pathname separators with POSIX separator
+            rcontext = rcontext.replace(os.sep, '/')
             rcontext = rcontext.lstrip('/')
             rcontext = posixpath.join(remote_path, rcontext)
 
