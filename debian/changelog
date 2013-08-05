@@ -1,3 +1,9 @@
+fabric (1.6.2-1) UNRELEASED; urgency=low
+
+  * New upstream release (Closes: #705700)
+
+ -- Rodney Lorrimar <rlorrimar@ccg.murdoch.edu.au>  Mon,  5 Aug 2013 18:24:22 +0800
+
 fabric (1.4.3-1) unstable; urgency=low
 
   * New upstream release (Closes: #680209)
