@@ -1,4 +1,4 @@
-fabric (1.6.2-1) UNRELEASED; urgency=low
+fabric (1.6.2-1) unstable; urgency=low
 
   * New upstream release (Closes: #705700)
   * Drop 01-paramiko.diff
