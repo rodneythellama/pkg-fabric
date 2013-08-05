@@ -1,9 +1,18 @@
 from __future__ import with_statement
 
+import os
+import sys
+
 from nose.tools import eq_, ok_
 
 from fabric.state import env, output
-from fabric.context_managers import cd, settings, lcd, hide
+from fabric.context_managers import (cd, settings, lcd, hide, shell_env, quiet,
+    warn_only, prefix, path)
+from fabric.operations import run, local
+
+from utils import mock_streams, FabricTest
+from server import server
+from StringIO import StringIO
 
 
 #
@@ -38,6 +47,21 @@ def test_cwd_with_absolute_paths():
             eq_(env.cwd, absolute)
         with cd(additional):
             eq_(env.cwd, existing + '/' + additional)
+
+
+#
+#  prefix
+#
+
+def test_nested_prefix():
+    """
+    prefix context managers can be created outside of the with block and nested
+    """
+    cm1 = prefix('1')
+    cm2 = prefix('2')
+    with cm1:
+        with cm2:
+            eq_(env.command_prefixes, ['1', '2'])
 
 
 #
@@ -129,3 +153,88 @@ def test_settings_clean_revert():
         env.modified = "modified internally"
     eq_(env.modified, "modified internally")
     ok_("inner_only" not in env)
+
+
+#
+# shell_env()
+#
+
+def test_shell_env():
+    """
+    shell_env() sets the shell_env attribute in the env dict
+    """
+    with shell_env(KEY="value"):
+        eq_(env.shell_env['KEY'], 'value')
+
+    eq_(env.shell_env, {})
+
+class TestQuietAndWarnOnly(FabricTest):
+    @server()
+    @mock_streams('both')
+    def test_quiet_hides_all_output(self):
+        # Sanity test - normally this is not empty
+        run("ls /simple")
+        ok_(sys.stdout.getvalue())
+        # Reset
+        sys.stdout = StringIO()
+        # Real test
+        with quiet():
+            run("ls /simple")
+        # Empty output
+        ok_(not sys.stdout.getvalue())
+        # Reset
+        sys.stdout = StringIO()
+        # Kwarg test
+        run("ls /simple", quiet=True)
+        ok_(not sys.stdout.getvalue())
+
+    @server(responses={'barf': [
+        "this is my stdout",
+        "this is my stderr",
+        1
+    ]})
+    def test_quiet_sets_warn_only_to_true(self):
+        # Sanity test to ensure environment
+        with settings(warn_only=False):
+            with quiet():
+                eq_(run("barf").return_code, 1)
+            # Kwarg test
+            eq_(run("barf", quiet=True).return_code, 1)
+
+    @server(responses={'hrm': ["", "", 1]})
+    @mock_streams('both')
+    def test_warn_only_is_same_as_settings_warn_only(self):
+        with warn_only():
+            eq_(run("hrm").failed, True)
+
+    @server()
+    @mock_streams('both')
+    def test_warn_only_does_not_imply_hide_everything(self):
+        with warn_only():
+            run("ls /simple")
+            assert sys.stdout.getvalue().strip() != ""
+
+
+# path() (distinct from shell_env)
+
+class TestPathManager(FabricTest):
+    def setup(self):
+        super(TestPathManager, self).setup()
+        self.real = os.environ.get('PATH')
+
+    def via_local(self):
+        with hide('everything'):
+            return local("echo $PATH", capture=True)
+
+    def test_lack_of_path_has_default_local_path(self):
+        """
+        No use of 'with path' == default local $PATH
+        """
+        eq_(self.real, self.via_local())
+
+    def test_use_of_path_appends_by_default(self):
+        """
+        'with path' appends by default
+        """
+        with path('foo'):
+            eq_(self.via_local(), self.real + ":foo")
